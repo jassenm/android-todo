@@ -11,7 +11,7 @@
     tools:context="com.example.jassenmoran.simpletodo.MainActivity">
 
     <Button
-        android:text="Add Item"
+        android:text="Add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onAddItem"
@@ -20,24 +20,24 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/btnAddItem" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnAddItem"
-        android:id="@+id/lvItems" />
-
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
         android:ems="10"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/etNewItem"
-        android:hint="EditText" />
+        android:hint="Add a new item"
+        android:textSize="18sp" />Tak
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvItems"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/btnAddItem" />
 </RelativeLayout>
