@@ -15,24 +15,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="onSaveItem"
-        android:layout_alignParentTop="true"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:id="@+id/btnSaveItem"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="28dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="136dp"
-        android:id="@+id/btnSaveItem" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_alignBottom="@+id/btnSaveItem"
-        android:layout_alignLeft="@+id/btnSaveItem"
-        android:layout_alignStart="@+id/btnSaveItem"
-        android:layout_marginBottom="63dp"
-        android:id="@+id/editText" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:text="Edit Item Below:"
@@ -40,8 +28,45 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView"
         android:textSize="24sp"
-        android:layout_above="@+id/editText"
+        android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/editText"
         android:layout_alignStart="@+id/editText"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginTop="15dp" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/btnSaveItem"
+        android:layout_alignStart="@+id/btnSaveItem"
+        android:layout_marginTop="13dp" />
+
+
+    <TextView
+        android:text="Due:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/DueTextView"
+        android:textSize="18sp"
+        android:layout_marginTop="74dp"
+        android:layout_alignTop="@+id/editText"
+        android:layout_alignLeft="@+id/editText"
+        android:layout_alignStart="@+id/editText"
+        />
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/DueTextView"
+        android:layout_toRightOf="@+id/DueTextView"
+        android:layout_marginLeft="21dp"
+        android:layout_marginStart="21dp"
+        android:id="@+id/DateTextView"
+        android:onClick="onClickDate"
+        android:textSize="18sp" />
+
 </RelativeLayout>
