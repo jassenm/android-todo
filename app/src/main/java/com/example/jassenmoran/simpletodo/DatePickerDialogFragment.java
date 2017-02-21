@@ -14,8 +14,6 @@ import android.support.v4.app.DialogFragment;
 public class DatePickerDialogFragment extends DialogFragment {
 
     private DatePickerDialog.OnDateSetListener mListener = null;
-    private int mDay;
-    private int mYear;
 
     public DatePickerDialogFragment() {
         // nothing
