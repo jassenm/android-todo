@@ -3,6 +3,7 @@ package com.example.jassenmoran.simpletodo;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by jassenmoran on 2/9/17.
@@ -10,7 +11,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class TodoDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "todo.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 7;
 
     public TodoDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -20,9 +21,13 @@ public class TodoDbHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         final String SQL_CREATE_TODO_TABLE = "CREATE TABLE " +
                 TodoContract.TodoEntry.TABLE_NAME + " (" +
-                TodoContract.TodoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TodoContract.TodoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TodoContract.TodoEntry.COLUMN_TODO_TITLE + " TEXT NOT NULL, " +
-                TodoContract.TodoEntry.COLUMN_TODO_DATE + " TEXT NOT NULL" + ");";
+                TodoContract.TodoEntry.COLUMN_TODO_MONTH + " INTEGER, " +
+                TodoContract.TodoEntry.COLUMN_TODO_DAY + " INTEGER, " +
+                TodoContract.TodoEntry.COLUMN_TODO_YEAR + " INTEGER" +
+                ");";
+        Log.i("Me", SQL_CREATE_TODO_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_TODO_TABLE);
     }
 
