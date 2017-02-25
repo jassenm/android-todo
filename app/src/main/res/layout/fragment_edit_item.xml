@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_edit_todo"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,22 +15,24 @@
         android:layout_margin="10dp">
 
         <TextView
-            android:text="Title"
-            android:layout_width="80dp"
+            android:text="@string/edit_title_label"
             android:layout_height="wrap_content"
             android:id="@+id/tv_todo_title"
             android:layout_weight="1"
             android:textSize="18sp"
-            android:padding="8dp" />
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:layout_width="0dp" />
 
         <EditText
             android:id="@+id/et_todo_title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:inputType="text"
             android:imeOptions="actionDone"
-            android:layout_weight="1"
-            android:padding="8dp" />
+            android:layout_weight="2"
+            android:padding="8dp"
+            android:gravity="left|center_vertical" />
     </LinearLayout>
 
     <LinearLayout
@@ -39,23 +42,49 @@
         android:layout_margin="10dp">
 
         <TextView
-            android:text="Date"
-            android:layout_width="80dp"
+            android:text="@string/edit_date_label"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="18sp"
-            android:padding="8dp" />
+            android:padding="8dp"
+            tools:textColor="@android:color/black"
+            android:textColor="@android:color/black"
+            android:layout_width="0dp" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:id="@+id/tv_date"
             android:textSize="18sp"
-            />
+            android:gravity="left"
+            android:padding="8dp" />
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:text="@string/edit_priority_label"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:layout_width="0dp" />
+
+        <Spinner
+            android:id="@+id/priority_spinner"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="left"
+            android:layout_width="0dp"
+            android:padding="8dp" />
+    </LinearLayout>
 
 
 </LinearLayout>

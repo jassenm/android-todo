@@ -17,7 +17,7 @@ import java.util.Calendar;
 
 
 public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoItemClickListener,
-        EditNameDialogFragment.EditDialogListener
+        EditTodoDialogFragment.EditDialogListener, DeleteConfirmationDialog.DeleteConfirmDialogListener
 {
     private RecyclerView   mRecyclerView;
     private TodoAdapter    mAdapter;
@@ -50,8 +50,10 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDirection) {
                 long id = (long) viewHolder.itemView.getTag();
-                removeTodoItem(id);
-                mAdapter.swapCursor(getAllTodos());
+
+                FragmentManager fm = getSupportFragmentManager();
+                DeleteConfirmationDialog deleteDialogFragment = DeleteConfirmationDialog.newInstance(id);
+                deleteDialogFragment.show(fm, "");
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -62,16 +64,25 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
 
                 final Calendar c = Calendar.getInstance();
 
-                int month = c.get(Calendar.MONTH) + 1;
+                int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
                 int year = c.get(Calendar.YEAR);
 
-                showEditDialog(100, "", month, day, year);
+                showEditDialog(100, "", month, day, year, "Low");
             }
         });
-
     }
 
+    @Override
+    public void onDeleteConfirmed(Long id) {
+        removeTodoItem(id);
+        mAdapter.swapCursor(getAllTodos());
+    }
+
+    @Override
+    public void onDeleteCancelled() {
+        mAdapter.swapCursor(getAllTodos());
+    }
 
     private Cursor getAllTodos() {
         return mDb.query(
@@ -87,16 +98,9 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
     @Override
     public void onTodoItemClick(long clickedItemIndex) {
 
-        String[] cols = new String[] {
-                TodoContract.TodoEntry._ID,
-                TodoContract.TodoEntry.COLUMN_TODO_TITLE,
-                TodoContract.TodoEntry.COLUMN_TODO_MONTH,
-                TodoContract.TodoEntry.COLUMN_TODO_DAY,
-                TodoContract.TodoEntry.COLUMN_TODO_YEAR
-        };
         Cursor qCursor = mDb.query(
                 TodoContract.TodoEntry.TABLE_NAME,
-                cols,
+                null,
                 TodoContract.TodoEntry._ID + "=" + clickedItemIndex,
                 null,
                 null,
@@ -108,21 +112,22 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
             qCursor.moveToFirst();
 
             String title = qCursor.getString(qCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_TITLE));
+            String priority = qCursor.getString(qCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_PRI));
             int month = qCursor.getInt(qCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_MONTH));
             int day = qCursor.getInt(qCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_DAY));
             int year = qCursor.getInt(qCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_YEAR));
 
-            showEditDialog(clickedItemIndex, title, month, day, year);
+            showEditDialog(clickedItemIndex, title, month, day, year, priority);
 
             qCursor.close();
         }
     }
 
 
-    private void showEditDialog(long index, String text, int month, int day, int year) {
+    private void showEditDialog(long index, String text, int month, int day, int year, String priority) {
         FragmentManager fm = getSupportFragmentManager();
-        EditNameDialogFragment editNameDialogFragment = EditNameDialogFragment.newInstance(index, text, month, day, year);
-        editNameDialogFragment.show(fm, "ll_edit_todo");
+        EditTodoDialogFragment editTodoDialogFragment = EditTodoDialogFragment.newInstance(index, text, month, day, year, priority);
+        editTodoDialogFragment.show(fm, "ll_edit_todo");
     }
 
 
@@ -131,7 +136,7 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
                    TodoContract.TodoEntry._ID + "=" + id, null);
     }
 
-    private long addNewTodo(long id, String text, int month, int day, int year) {
+    private long addNewTodo(long id, String text, int month, int day, int year, String priority) {
         Log.i("me", "Adding " + text);
         long insertResult = -1;
         if (text.length() > 0) {
@@ -140,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
             cv.put(TodoContract.TodoEntry.COLUMN_TODO_MONTH, month);
             cv.put(TodoContract.TodoEntry.COLUMN_TODO_DAY, day);
             cv.put(TodoContract.TodoEntry.COLUMN_TODO_YEAR, year);
+            cv.put(TodoContract.TodoEntry.COLUMN_TODO_PRI, priority);
 
             insertResult = mDb.insert(TodoContract.TodoEntry.TABLE_NAME, null, cv);
         }
@@ -150,10 +156,10 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
     @Override
     public void onFinishEditDialog(Bundle bundle) {
 
-        saveTodoItem(bundle.getLong("pos"), bundle.getString("title"), bundle.getInt("month"), bundle.getInt("day"), bundle.getInt("year"));
+        saveTodoItem(bundle.getLong("pos"), bundle.getString("title"), bundle.getInt("month"), bundle.getInt("day"), bundle.getInt("year"), bundle.getString("priority"));
     }
 
-    public void saveTodoItem(long id, String text, int month, int day, int year) {
+    public void saveTodoItem(long id, String text, int month, int day, int year, String priority) {
 
         ContentValues args = new ContentValues();
         args.put(TodoContract.TodoEntry._ID, id);
@@ -161,11 +167,13 @@ public class MainActivity extends AppCompatActivity implements TodoAdapter.TodoI
         args.put(TodoContract.TodoEntry.COLUMN_TODO_MONTH, month);
         args.put(TodoContract.TodoEntry.COLUMN_TODO_DAY, day);
         args.put(TodoContract.TodoEntry.COLUMN_TODO_YEAR, year);
+        args.put(TodoContract.TodoEntry.COLUMN_TODO_PRI, priority);
+
         int i =  mDb.update(TodoContract.TodoEntry.TABLE_NAME, args, TodoContract.TodoEntry._ID + "=" + id, null);
 
         if (i < 1)
         {
-            addNewTodo(id, text, month, day, year);
+            addNewTodo(id, text, month, day, year, priority);
         }
         mAdapter.swapCursor(getAllTodos());
     }

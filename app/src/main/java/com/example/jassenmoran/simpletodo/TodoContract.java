@@ -14,5 +14,6 @@ public class TodoContract {
         public static final String COLUMN_TODO_MONTH = "month";
         public static final String COLUMN_TODO_DAY = "day";
         public static final String COLUMN_TODO_YEAR = "year";
+        public static final String COLUMN_TODO_PRI = "priority";
     }
 }

@@ -1,25 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="56dp"
-android:gravity="center_vertical"
-android:orientation="horizontal">
-
-<TextView
-    android:id="@+id/priority_text_view"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_gravity="center"
-    android:fontFamily="sans-serif"
-    android:gravity="center"
-    android:textColor="@android:color/black"
-    android:textSize="16sp"/>
-
-<TextView
-    android:id="@+id/title_text_view"
-    android:layout_width="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fontFamily="sans-serif"
-    android:textSize="16sp"/>
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/priority_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Low"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif"
+            android:gravity="right|center"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:layout_weight="1"
+            tools:paddingRight="12dp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:id="@+id/borderline"
+        android:background="#933232" />
 
 </LinearLayout>

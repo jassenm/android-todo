@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+
 /**
  * Created by jassenmoran on 2/9/17.
  */
@@ -40,8 +41,10 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
         if (!mCursor.moveToPosition(position))
             return;
         String title = mCursor.getString(mCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_TITLE));
+        String priority = mCursor.getString(mCursor.getColumnIndex(TodoContract.TodoEntry.COLUMN_TODO_PRI));
         long id = mCursor.getLong(mCursor.getColumnIndex(TodoContract.TodoEntry._ID));
-        holder.mTextView.setText(title);
+        holder.mTitleTextView.setText(title);
+        holder.mPriorityTextView.setText(priority);
         holder.itemView.setTag(id); // store id - not intended to be displayed
     }
 
@@ -62,15 +65,18 @@ public class TodoAdapter extends RecyclerView.Adapter<TodoAdapter.TodoViewHolder
 
     public static class TodoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView mTextView;
+        TextView mTitleTextView;
+        TextView mPriorityTextView;
         TodoItemClickListener mListener;
 
         public TodoViewHolder(View itemView, TodoItemClickListener clickListener) {
             super(itemView);
             mListener = clickListener;
-            mTextView = (TextView) itemView.findViewById(R.id.title_text_view);
+            mTitleTextView = (TextView) itemView.findViewById(R.id.title_text_view);
+            mPriorityTextView = (TextView) itemView.findViewById(R.id.priority_text_view);
 
-            mTextView.setOnClickListener(this);
+            mTitleTextView.setOnClickListener(this);
+            mPriorityTextView.setOnClickListener(this);
         }
 
         @Override

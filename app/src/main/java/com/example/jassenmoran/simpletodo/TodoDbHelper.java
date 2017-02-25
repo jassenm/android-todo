@@ -11,7 +11,7 @@ import android.util.Log;
 
 public class TodoDbHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "todo.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 11;
 
     public TodoDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,7 +25,8 @@ public class TodoDbHelper extends SQLiteOpenHelper {
                 TodoContract.TodoEntry.COLUMN_TODO_TITLE + " TEXT NOT NULL, " +
                 TodoContract.TodoEntry.COLUMN_TODO_MONTH + " INTEGER, " +
                 TodoContract.TodoEntry.COLUMN_TODO_DAY + " INTEGER, " +
-                TodoContract.TodoEntry.COLUMN_TODO_YEAR + " INTEGER" +
+                TodoContract.TodoEntry.COLUMN_TODO_YEAR + " INTEGER, " +
+                TodoContract.TodoEntry.COLUMN_TODO_PRI + " TEXT NOT NULL" +
                 ");";
         Log.i("Me", SQL_CREATE_TODO_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_TODO_TABLE);

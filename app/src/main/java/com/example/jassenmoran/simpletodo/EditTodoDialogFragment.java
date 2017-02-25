@@ -10,22 +10,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.support.v4.app.DialogFragment;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
  * Created by jassenmoran on 2/16/17.
  */
 
-public class EditNameDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener
+public class EditTodoDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener,
+        AdapterView.OnItemSelectedListener
 {
 
     private String mTitle;
     private int mMonth;
     private int mDay;
     private int mYear;
+    private String mPriority;
 
     private Long mPos;
     EditText mTitleEditText;
@@ -35,8 +40,9 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     private static final String MONTH = "month";
     private static final String DAY = "day";
     private static final String YEAR = "year";
+    private static final String PRIORITY = "priority";
 
-    public EditNameDialogFragment() {
+    public EditTodoDialogFragment() {
         // Empty constructor is required for DialogFragment
         // Make sure not to add arguments to the constructor
         // Use `newInstance` instead as shown below
@@ -47,9 +53,9 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
     }
 
 
-    public static EditNameDialogFragment newInstance(Long index, String text, int month, int day, int year) {
-        EditNameDialogFragment frag = new EditNameDialogFragment();
-        Bundle bundle = getBundle(index, text, month, day, year);
+    public static EditTodoDialogFragment newInstance(Long index, String text, int month, int day, int year, String priority) {
+        EditTodoDialogFragment frag = new EditTodoDialogFragment();
+        Bundle bundle = getBundle(index, text, month, day, year, priority);
         frag.setArguments(bundle);
         return frag;
     }
@@ -65,6 +71,7 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         mMonth = bundle.getInt(MONTH);
         mDay = bundle.getInt(DAY);
         mYear = bundle.getInt(YEAR);
+        mPriority = bundle.getString(PRIORITY);
 
         View theView = inflater.inflate(R.layout.fragment_edit_item, null);
 
@@ -84,12 +91,20 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
             }
         });
 
+        Spinner spinner = (Spinner) theView.findViewById(R.id.priority_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getActivity(),
+                R.array.priority_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(adapter.getPosition(mPriority));
+        spinner.setOnItemSelectedListener(this);
+
         builder.setView(theView)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // pass info
-                        Bundle returnedBundle = getBundle(mPos, mTitleEditText.getText().toString(), mMonth, mDay, mYear);
+                        Bundle returnedBundle = getBundle(mPos, mTitleEditText.getText().toString(), mMonth, mDay, mYear, mPriority);
 
                         EditDialogListener listener = (EditDialogListener) getActivity();
                         listener.onFinishEditDialog(returnedBundle);
@@ -104,14 +119,25 @@ public class EditNameDialogFragment extends DialogFragment implements DatePicker
         return builder.create();
     }
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        mPriority = parent.getItemAtPosition(pos).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
+    }
+
     @NonNull
-    private static Bundle getBundle(Long mPos, String value, int mMonth, int mDay, int mYear) {
+    private static Bundle getBundle(Long mPos, String value, int mMonth, int mDay, int mYear, String priority) {
         Bundle returnedBundle = new Bundle();
         returnedBundle.putLong(POSITION, mPos);
         returnedBundle.putString(TITLE, value);
         returnedBundle.putInt(MONTH, mMonth);
         returnedBundle.putInt(DAY, mDay);
         returnedBundle.putInt(YEAR, mYear);
+        returnedBundle.putString(PRIORITY, priority);
         return returnedBundle;
     }
 
